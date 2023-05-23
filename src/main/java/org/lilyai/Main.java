@@ -1,7 +1,5 @@
 package org.lilyai;
 
-import org.lilyai.*;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,9 +24,6 @@ public class Main {
 
         // Step 3: Read the product type file
         List<String[]> productTypeData = CSVReader.read(PRODUCT_TYPE_FILE);
-        for (String[] row : productTypeData) {
-            System.out.println(Arrays.toString(row));
-        }
         ProductTypeValidator.setProductTypes(productTypeData);
 
         // Step 4: Perform validations and create the status data
