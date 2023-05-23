@@ -19,3 +19,19 @@ I will create a walkthrough of the steps I do.
 - Create a status file in the form of a new csv file to store the rows and columns from the input file. 
 - Include additional column named "status"
 - Iterate through input file, validation each row and then write the row to the status file with the validation status and any errors
+
+
+#Class walkthrough (modular approach with separated functionality into different classes)
+
+Main class:
+- Main.java: Contains the main method and serves as the entry point for the program.
+
+Input handling:
+- CSVReader.java: Responsible for reading the input CSV file and returning the data as a list of arrays.
+- CSVWriter.java: Handles writing data to the status CSV file.
+
+Validation:
+
+- GenderValidator.java: Performs gender validation against the database.
+- ProductTypeValidator.java: Performs product type validation against the database.
+- ImageValidator.java: Validates the image URLs.
