@@ -1,10 +1,10 @@
-# problemStatement
+#problemStatement
 In this program I will put together a Java Project for a job technical interview.
 
 
 I will create a walkthrough of the steps I do.
 
-#Step 1: Create MySql DB and tables:
+## Step 1: Create MySql DB and tables:
 - Set up MySql database, using MySql WorkBench 8 and this SQL query.
 ```
 CREATE DATABASE your_database_name;
@@ -29,7 +29,7 @@ CREATE TABLE genders (
   - We need to get appropriate columns for each table
 
 
-#Step 2: Write Java Program To do the following:
+## Step 2: Write Java Program To do the following:
 - Read input file to read and validate input file
 - Gender validation by comparing gender info with input file with genders in database, note error if any discrepancies are found
 - Product type validation: Compare product types from the input file with the ones stored in the database, if mismatch occurs, note it.
