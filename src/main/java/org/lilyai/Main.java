@@ -98,7 +98,7 @@ public class Main {
     }
 
     private static void populateGenders(Connection connection, List<String[]> data) throws SQLException {
-        String insertQuery = "INSERT INTO genders (id, display_name) VALUES (?, ?)";
+        String insertQuery = "INSERT IGNORE INTO genders (id, display_name) VALUES (?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
             for (String[] row : data) {
@@ -109,8 +109,9 @@ public class Main {
         }
     }
 
+
     private static void populateProductTypes(Connection connection, List<String[]> data) throws SQLException {
-        String insertQuery = "INSERT INTO product_types (id, display_name, vertical_display_name) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT IGNORE INTO product_types (id, display_name, vertical_display_name) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
             for (String[] row : data) {
@@ -121,4 +122,5 @@ public class Main {
             }
         }
     }
+
 }
