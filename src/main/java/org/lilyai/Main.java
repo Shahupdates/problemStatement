@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -25,6 +26,9 @@ public class Main {
 
         // Step 3: Read the product type file
         List<String[]> productTypeData = CSVReader.read(PRODUCT_TYPE_FILE);
+        for (String[] row : productTypeData) {
+            System.out.println(Arrays.toString(row));
+        }
         ProductTypeValidator.setProductTypes(productTypeData);
 
         // Step 4: Perform validations and create the status data
@@ -87,7 +91,7 @@ public class Main {
     }
 
     private static void populateDatabaseTables(List<String[]> genderData, List<String[]> productTypeData) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lilyData", "your_username", "your_password")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lilyDATA", "root", "root")) {
             // Step 6a: Populate the genders table
             populateGenders(connection, genderData);
 
