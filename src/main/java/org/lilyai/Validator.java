@@ -2,7 +2,7 @@ package org.lilyai;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// extra class that was scrapped
 public class Validator {
     public static 
     List<String[]> validateAndCreateStatus(List<String[]> inputData) {
@@ -57,10 +57,5 @@ public class Validator {
         return statusData;
     }
 
-    private static boolean validateImages(String images) {
-        // Implement image validation logic here
-        // Return true if all images are valid, false otherwise
-        return true;  // Replace with your implementation
-    }
 }
 
