@@ -63,11 +63,29 @@ public class Main {
         String gender = row[0];
         System.out.println("Gender: " + gender);  // Print the value of gender
 
+        // Validate gender
+        if (!GenderValidator.validate(gender)) {
+            isValid = false;
+            errorMessages.append("Invalid gender. ");
+        }
+
         String productType = row[1];
         System.out.println("Product Type: " + productType);  // Print the value of productType
 
+        // Validate product type
+        if (!ProductTypeValidator.validate(productType)) {
+            isValid = false;
+            errorMessages.append("Invalid product type. ");
+        }
+
         String images = row[2];
         System.out.println("Images: " + images);  // Print the value of images
+
+        // Validate images
+        if (!ImageValidator.validate(images)) {
+            isValid = false;
+            errorMessages.append("Invalid images. ");
+        }
 
         // Rest of the validation code...
 
@@ -80,6 +98,7 @@ public class Main {
             return errorMessages.toString();
         }
     }
+
 
 
     private static void populateDatabaseTables(List<String[]> genderData, List<String[]> productTypeData) {
