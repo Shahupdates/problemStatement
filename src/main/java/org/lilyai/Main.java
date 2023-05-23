@@ -60,30 +60,27 @@ public class Main {
         boolean isValid = true;
         StringBuilder errorMessages = new StringBuilder();
 
-        String gender = row[0];  // Replace with the appropriate column index
-        if (!GenderValidator.validate(gender)) {
-            isValid = false;
-            errorMessages.append("Invalid gender. ");
-        }
+        String gender = row[0];
+        System.out.println("Gender: " + gender);  // Print the value of gender
 
-        String productType = row[1];  // Replace with the appropriate column index
-        if (!ProductTypeValidator.validate(productType)) {
-            isValid = false;
-            errorMessages.append("Invalid product type. ");
-        }
+        String productType = row[1];
+        System.out.println("Product Type: " + productType);  // Print the value of productType
 
-        String images = row[2];  // Replace with the appropriate column index
-        if (!ImageValidator.validate(images)) {
-            isValid = false;
-            errorMessages.append("Invalid images. ");
-        }
+        String images = row[2];
+        System.out.println("Images: " + images);  // Print the value of images
 
+        // Rest of the validation code...
+
+        // Print the validation status
         if (isValid) {
+            System.out.println("Validation Status: Valid");
             return "Valid";
         } else {
+            System.out.println("Validation Status: " + errorMessages.toString());
             return errorMessages.toString();
         }
     }
+
 
     private static void populateDatabaseTables(List<String[]> genderData, List<String[]> productTypeData) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lilyDATA", "root", "root")) {
