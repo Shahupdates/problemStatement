@@ -39,7 +39,7 @@ CREATE TABLE genders (
 - Iterate through input file, validation each row and then write the row to the status file with the validation status and any errors
 
 
-#Class walkthrough (modular approach with separated functionality into different classes)
+## Class walkthrough (modular approach with separated functionality into different classes)
 
 Main class:
 - Main.java: Contains the main method and serves as the entry point for the program.
