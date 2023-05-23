@@ -28,7 +28,20 @@ CREATE TABLE genders (
 );
 ```
 
-  - We need to get appropriate columns for each table
+  - We need to get appropriate columns for each table, so lets insert data into tables, use the following queries:
+```
+LOAD DATA INFILE 'path_to_genders.csv'
+INTO TABLE genders
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+IGNORE 1 LINES;
+```
+
+```
+LOAD DATA INFILE 'path_to_productTypes.csv'
+INTO TABLE product_types
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+IGNORE 1 LINES;
+```
 
 
 ## Step 2: Write Java Program To do the following:
