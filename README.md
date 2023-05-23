@@ -7,11 +7,13 @@ I will create a walkthrough of the steps I do.
 ## Step 1: Create MySql DB and tables:
 - Set up MySql database, using MySql WorkBench 8 and this SQL query.
 ```
-CREATE DATABASE your_database_name;
+CREATE DATABASE lilyData;
 ```
 
 - Set up tables to store information. We will need two tables: product table and genders table, use the following queries:
 ```
+USE lilyData;
+
 -- Table for product types
 CREATE TABLE product_types (
     id INT PRIMARY KEY,
