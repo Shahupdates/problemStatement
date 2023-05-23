@@ -5,9 +5,28 @@ In this program I will put together a Java Project for a job technical interview
 I will create a walkthrough of the steps I do.
 
 #Step 1: Create MySql DB and tables:
-- Set up mysql database
+- Set up MySql database, using MySql WorkBench 8 and this SQL query.
+```
+CREATE DATABASE your_database_name;
+```
+
 - Set up tables to store information
-  - After looking at the tables, it seems ilke we will need two tables: product table and genders table
+  - After looking at the tables, it seems ilke we will need two tables: product table and genders table, use the following queries:
+```
+-- Table for product types
+CREATE TABLE product_types (
+    id INT PRIMARY KEY,
+    display_name VARCHAR(255),
+    vertical_display_name VARCHAR(255)
+);
+
+-- Table for genders
+CREATE TABLE genders (
+    id INT PRIMARY KEY,
+    display_name VARCHAR(255)
+);
+```
+
   - We need to get appropriate columns for each table
 
 
