@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    private static final String INPUT_FILE = "input.csv";
-    private static final String STATUS_FILE = "status.csv";
-    private static final String GENDER_FILE = "genders.csv";
-    private static final String PRODUCT_TYPE_FILE = "productTypes.csv";
+    private static final String INPUT_FILE = "src/main/resources/data/inputfile.csv";
+    private static final String STATUS_FILE = "src/main/resources/data/status.csv";
+    private static final String GENDER_FILE = "src/main/resources/data/genders.csv";
+    private static final String PRODUCT_TYPE_FILE = "src/main/resources/data/producttypes.csv";
 
     public static void main(String[] args) {
         // Step 1: Read the input file
