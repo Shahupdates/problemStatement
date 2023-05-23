@@ -9,7 +9,7 @@ public class ProductTypeValidator {
 
     public static void setProductTypes(List<String[]> productTypeData) {
         for (String[] row : productTypeData) {
-            int id = Integer.parseInt(row[0]);
+            int id = Integer.parseInt(row[0].replaceAll("\"", ""));
             String productType = row[1];
             productTypes.put(id, productType);
         }
