@@ -10,8 +10,7 @@ I will create a walkthrough of the steps I do.
 CREATE DATABASE your_database_name;
 ```
 
-- Set up tables to store information
-  - After looking at the tables, it seems ilke we will need two tables: product table and genders table, use the following queries:
+- Set up tables to store information. We will need two tables: product table and genders table, use the following queries:
 ```
 -- Table for product types
 CREATE TABLE product_types (
