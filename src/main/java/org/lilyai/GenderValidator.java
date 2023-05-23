@@ -13,8 +13,10 @@ public class GenderValidator {
             int id = Integer.parseInt(row[0]);
             String gender = row[1];
             genders.put(id, gender);
+            System.out.println("Added gender: ID=" + id + ", Gender=" + gender);
         }
     }
+
 
 
     public static boolean validate(String gender) {
