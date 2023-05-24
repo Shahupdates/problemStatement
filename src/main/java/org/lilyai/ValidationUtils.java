@@ -3,13 +3,9 @@ package org.lilyai;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -26,7 +22,7 @@ public class ValidationUtils {
     private static final int THREAD_POOL_SIZE = 10;
 
     public static void validateGender(List<String[]> rows) {
-        List<String> validGenders = ValidationUtils.getValidGendersFromCSV();
+        List<String> validGenders = CsvReader.getValidGendersFromCSV();
 
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement("SELECT id FROM genders WHERE display_name = ?")) {
@@ -52,7 +48,7 @@ public class ValidationUtils {
     public static List<String> getValidGendersFromCSV() {
         List<String> validGenders = new ArrayList<>();
 
-        try (Reader in = new FileReader("data/Genders.csv")) {
+        try (Reader in = new FileReader("src/main/resources/data/Genders.csv")) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .parse(in);
@@ -72,7 +68,7 @@ public class ValidationUtils {
     }
 
     public static void validateProductType(List<String[]> rows) {
-        List<String> validProductTypes = ValidationUtils.getValidProductTypesFromCSV();
+        List<String> validProductTypes = CsvReader.getValidProductTypesFromCSV();
 
         boolean isFirstRow = true; // To skip the header row
         for (String[] row : rows) {
@@ -93,7 +89,7 @@ public class ValidationUtils {
     public static List<String> getValidProductTypesFromCSV() {
         List<String> validProductTypes = new ArrayList<>();
 
-        try (Reader in = new FileReader("data/ProductTypes.csv")) {
+        try (Reader in = new FileReader("src/main/resources/data/ProductTypes.csv")) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .parse(in);
@@ -213,26 +209,6 @@ public class ValidationUtils {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to validate image URL: " + imageUrl, e);
             return false;
-        }
-    }
-
-    private static class ImageValidationTask implements Runnable {
-        private final String imageUrl;
-        private final String[] row;
-
-        public ImageValidationTask(String imageUrl, String[] row) {
-            this.imageUrl = imageUrl;
-            this.row = row;
-        }
-
-        @Override
-        public void run() {
-            LOGGER.log(Level.INFO, "Validating image URL: {0}", imageUrl);
-            if (!isValidImageUrl(imageUrl)) {
-                LOGGER.log(Level.INFO, "Invalid Image URL: {0} for row: {1}", new Object[]{imageUrl, String.join(",", row)});
-            } else {
-                LOGGER.log(Level.INFO, "Valid Image URL: {0}", imageUrl);
-            }
         }
     }
 }
