@@ -28,7 +28,7 @@ public class ValidationUtils {
     private static final int THREAD_POOL_SIZE = 10;
 
     public static void validateGender(List<String[]> rows) {
-        List<String> validGenders = CSVReader.getValidGendersFromCSV();
+        List<String> validGenders = ValidationUtils.getValidGendersFromCSV();
 
         try (
                 Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -75,7 +75,7 @@ public class ValidationUtils {
     }
 
     public static void validateProductType(List<String[]> rows) {
-        List<String> validProductTypes = CSVReader.getValidProductTypesFromCSV();
+        List<String> validProductTypes = ValidationUtils.getValidProductTypesFromCSV();
 
         boolean isFirstRow = true; // To skip the header row
         for (String[] row : rows) {
