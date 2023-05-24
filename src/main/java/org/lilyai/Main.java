@@ -20,9 +20,9 @@ public class Main {
     public static void main(String[] args) throws SQLException, IOException {
         try {
             String inputFile = "src/main/resources/data/InputFile.csv";
-            String outputFile = "src/main/resources/data/status.csv";
+            String outputFile = "status.csv";
 
-            List<String[]> rows = CsvReader.readInputFile(inputFile);
+            List<String[]> rows = CSVReader.readInputFile(inputFile);
 
             // Perform validations
             ValidationUtils.validateGender(rows);
@@ -30,7 +30,7 @@ public class Main {
             ValidationUtils.validateImages(rows);
 
             // Write status file
-            CsvWriter.writeStatusFile(rows, outputFile);
+            CSVWriter.writeStatusFile(rows, outputFile);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unexpected error occurred", e);
         }
