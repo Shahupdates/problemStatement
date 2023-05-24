@@ -7,12 +7,12 @@ import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ImageValidationTask implements Callable<Void> {
-    private static final Logger LOGGER = Logger.getLogger(ImageValidationTask.class.getName());
+public class ImageValidator implements Callable<Void> {
+    private static final Logger LOGGER = Logger.getLogger(ImageValidator.class.getName());
     private final String imageUrl;
     private final String[] row;
 
-    public ImageValidationTask(String imageUrl, String[] row) {
+    public ImageValidator(String imageUrl, String[] row) {
         this.imageUrl = imageUrl;
         this.row = row;
     }
