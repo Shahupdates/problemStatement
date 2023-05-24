@@ -6,6 +6,12 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,10 +28,11 @@ public class ValidationUtils {
     private static final int THREAD_POOL_SIZE = 10;
 
     public static void validateGender(List<String[]> rows) {
-        List<String> validGenders = CsvReader.getValidGendersFromCSV();
+        List<String> validGenders = CSVReader.getValidGendersFromCSV();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement("SELECT id FROM genders WHERE display_name = ?")) {
+        try (
+                Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement("SELECT id FROM genders WHERE display_name = ?")) {
             boolean isFirstRow = true; // To skip the header row
             for (String[] row : rows) {
                 if (isFirstRow) {
@@ -68,7 +75,7 @@ public class ValidationUtils {
     }
 
     public static void validateProductType(List<String[]> rows) {
-        List<String> validProductTypes = CsvReader.getValidProductTypesFromCSV();
+        List<String> validProductTypes = CSVReader.getValidProductTypesFromCSV();
 
         boolean isFirstRow = true; // To skip the header row
         for (String[] row : rows) {
