@@ -27,7 +27,7 @@ java -jar problemStatement.jar src/main/resources/data/InputFile.csv src/main/re
 
 Make sure to adjust the file paths based on the actual locations of the files in your project. By providing the correct command-line arguments, the program should be able to read the input file, perform the required validations, and generate the output file successfully.
 
-# Class walkthrough (modular approach with separated functionality into different classes)
+## Class walkthrough (modular approach with separated functionality into different classes)
 
 - Set up MySql database, using MySql 8 and this SQL query:
 ```
