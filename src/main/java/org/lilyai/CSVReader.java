@@ -5,37 +5,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CSVReader {
-    public static List<String[]> read(String filename) {
-        List<String[]> inputData = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(CSVReader.class.getName());
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            // Read the header row
-            String headerLine = reader.readLine();
-            String[] columnNames = parseRow(headerLine);
+    public static List<String[]> readInputFile(String inputFile) {
+        List<String[]> rows = new ArrayList<>();
 
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                String[] row = parseRow(line);
-                inputData.add(row);
+            while ((line = br.readLine()) != null) {
+                String[] row = line.split(",");
+                rows.add(row);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error reading input file", e);
         }
 
-        return inputData;
-    }
-
-    private static String[] parseRow(String line) {
-        // Split the line by comma, ignoring any commas within quotes
-        String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-
-        // Remove quotes from each part
-        for (int i = 0; i < parts.length; i++) {
-            parts[i] = parts[i].replaceAll("^\"|\"$", "");
-        }
-
-        return parts;
+        return rows;
     }
 }
