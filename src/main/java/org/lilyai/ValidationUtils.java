@@ -3,8 +3,7 @@ package org.lilyai;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
@@ -27,11 +26,10 @@ public class ValidationUtils {
     private static final int THREAD_POOL_SIZE = 10;
 
     public static void validateGender(List<String[]> rows) {
-        List<String> validGenders = getValidGendersFromCSV();
+        List<String> validGenders = ValidationUtils.getValidGendersFromCSV();
 
-        try (
-                Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                PreparedStatement stmt = conn.prepareStatement("SELECT id FROM genders WHERE display_name = ?")) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement("SELECT id FROM genders WHERE display_name = ?")) {
             boolean isFirstRow = true; // To skip the header row
             for (String[] row : rows) {
                 if (isFirstRow) {
@@ -54,7 +52,7 @@ public class ValidationUtils {
     public static List<String> getValidGendersFromCSV() {
         List<String> validGenders = new ArrayList<>();
 
-        try (Reader in = ValidationUtils.class.getResourceAsStream("/data/Genders.csv")) {
+        try (Reader in = new FileReader("data/Genders.csv")) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .parse(in);
@@ -74,7 +72,7 @@ public class ValidationUtils {
     }
 
     public static void validateProductType(List<String[]> rows) {
-        List<String> validProductTypes = getValidProductTypesFromCSV();
+        List<String> validProductTypes = ValidationUtils.getValidProductTypesFromCSV();
 
         boolean isFirstRow = true; // To skip the header row
         for (String[] row : rows) {
@@ -95,7 +93,7 @@ public class ValidationUtils {
     public static List<String> getValidProductTypesFromCSV() {
         List<String> validProductTypes = new ArrayList<>();
 
-        try (Reader in = ValidationUtils.class.getResourceAsStream("/data/ProductTypes.csv")) {
+        try (Reader in = new FileReader("data/ProductTypes.csv")) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .parse(in);
