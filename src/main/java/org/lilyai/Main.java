@@ -1,142 +1,38 @@
 package org.lilyai;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
-    private static final String INPUT_FILE = "src/main/resources/data/inputfile.csv";
-    private static final String STATUS_FILE = "src/main/resources/data/status.csv";
-    private static final String GENDER_FILE = "src/main/resources/data/genders.csv";
-    private static final String PRODUCT_TYPE_FILE = "src/main/resources/data/producttypes.csv";
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/lilyDATA";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "root";
+    private static final int THREAD_POOL_SIZE = 10;
 
-    public static void main(String[] args) {
-        // Step 1: Read the input file
-        List<String[]> inputData = CSVReader.read(INPUT_FILE);
+    public static void main(String[] args) throws SQLException, IOException {
+        try {
+            String inputFile = "src/main/resources/data/InputFile.csv";
+            String outputFile = "src/main/resources/data/status.csv";
 
-        // Step 2: Read the gender file
-        List<String[]> genderData = CSVReader.read(GENDER_FILE);
-        GenderValidator.setGenders(genderData);
+            List<String[]> rows = CsvReader.readInputFile(inputFile);
 
-        // Step 3: Read the product type file
-        List<String[]> productTypeData = CSVReader.read(PRODUCT_TYPE_FILE);
-        ProductTypeValidator.setProductTypes(productTypeData);
+            // Perform validations
+            ValidationUtils.validateGender(rows);
+            ValidationUtils.validateProductType(rows);
+            ValidationUtils.validateImages(rows);
 
-        // Step 4: Perform validations and create the status data
-        List<String[]> statusData = createStatusData(inputData);
-
-        // Step 5: Write the status data to the status file
-        CSVWriter.write(STATUS_FILE, statusData);
-
-        // Step 6: Populate the database tables
-        populateDatabaseTables(genderData, productTypeData);
-    }
-
-    private static List<String[]> createStatusData(List<String[]> inputData) {
-        List<String[]> statusData = new ArrayList<>();
-
-        // Iterate through each row of input data
-        for (String[] row : inputData) {
-            String[] statusRow = new String[row.length + 1];
-            System.arraycopy(row, 0, statusRow, 0, row.length);
-
-            // Perform validations and determine the status
-            String validationStatus = validateRow(row);
-            statusRow[row.length] = validationStatus;
-
-            // Add the status row to the status data
-            statusData.add(statusRow);
-        }
-
-        return statusData;
-    }
-
-    private static String validateRow(String[] row) {
-        // Perform validations for the row
-        boolean isValid = true;
-        StringBuilder errorMessages = new StringBuilder();
-
-        String gender = row[0];
-        System.out.println("Gender: " + gender);  // Print the value of gender
-
-        // Validate gender
-        if (!GenderValidator.validate(gender)) {
-            isValid = false;
-            errorMessages.append("Invalid gender. ");
-        }
-
-        String productType = row[1];
-        System.out.println("Product Type: " + productType);  // Print the value of productType
-
-        // Validate product type
-        if (!ProductTypeValidator.validate(productType)) {
-            isValid = false;
-            errorMessages.append("Invalid product type. ");
-        }
-
-        String images = row[2];
-        System.out.println("Images: " + images);  // Print the value of images
-
-        // Validate images
-        if (!ImageValidator.validate(images)) {
-            isValid = false;
-            errorMessages.append("Invalid images. ");
-        }
-
-        // Rest of the validation code...
-
-        // Print the validation status
-        if (isValid) {
-            System.out.println("Validation Status: Valid");
-            return "Valid";
-        } else {
-            System.out.println("Validation Status: " + errorMessages.toString());
-            return errorMessages.toString();
+            // Write status file
+            CsvWriter.writeStatusFile(rows, outputFile);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unexpected error occurred", e);
         }
     }
-
-
-
-    private static void populateDatabaseTables(List<String[]> genderData, List<String[]> productTypeData) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lilyDATA", "root", "root")) {
-            // Step 6a: Populate the genders table
-            populateGenders(connection, genderData);
-
-            // Step 6b: Populate the product_types table
-            populateProductTypes(connection, productTypeData);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void populateGenders(Connection connection, List<String[]> data) throws SQLException {
-        String insertQuery = "INSERT IGNORE INTO genders (id, display_name) VALUES (?, ?)";
-
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-            for (String[] row : data) {
-                statement.setInt(1, Integer.parseInt(row[0]));
-                statement.setString(2, row[1]);
-                statement.executeUpdate();
-            }
-        }
-    }
-
-
-    private static void populateProductTypes(Connection connection, List<String[]> data) throws SQLException {
-        String insertQuery = "INSERT IGNORE INTO product_types (id, display_name, vertical_display_name) VALUES (?, ?, ?)";
-
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-            for (String[] row : data) {
-                statement.setInt(1, Integer.parseInt(row[0]));
-                statement.setString(2, row[1]);
-                statement.setString(3, row[2]);
-                statement.executeUpdate();
-            }
-        }
-    }
-
 }
