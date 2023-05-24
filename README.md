@@ -1,16 +1,40 @@
-# problemStatement
-In this program I will put together a Java Project for a job technical interview.
+# Key Features
 
+Database Integration: The solution includes the establishment of a MySQL database with appropriate tables. This allows for seamless integration and validation of gender and product type information from the database, ensuring alignment with the input file.
 
-I will create a walkthrough of the steps I do.
+Extended Validations: In addition to the gender and product type validations, the solution incorporates image URL validation. The image URLs are checked for their status code (200), ensuring the validity of each image associated with a row in the input file.
 
-## Step 1: Create MySql DB and tables:
-- Set up MySql database, using MySql WorkBench 8 and this SQL query.
+Logging: To provide detailed feedback and error reporting, a robust logging mechanism has been implemented using the Java Logger class. Logs are generated at different levels (INFO, SEVERE) throughout the validation process, aiding in identifying and resolving any issues encountered.
+
+Testing: The commit history reflects the testing/debugging process, with appropriate commits containing debug versions of the code and relevant logging or debug statements to identify and resolve any issues encountered.
+
+Multithreading: Before the final edit to submit it, commit history will show proper multithreading implementation for the validation process to execute concurrently, leveraging the available computing resources and reducing the overall execution time.
+
+These enhancements add an extra layer of validation and data integrity to the original requirements. The solution strives to provide a comprehensive and reliable approach for validating input files, ensuring the accuracy and completeness of the data.
+
+# Execution
+
+To execute the JAR file correctly, you need to provide the command-line arguments as follows:
+```
+java -jar problemStatement.jar <inputFile> <outputFile>
+```
+
+For example, if the InputFile.csv file is located in src/main/resources/data/InputFile.csv, and you want the status.csv file to be generated in the same directory, you can use the following command:
+
+```
+java -jar problemStatement.jar src/main/resources/data/InputFile.csv src/main/resources/data/status.csv
+```
+
+Make sure to adjust the file paths based on the actual locations of the files in your project. By providing the correct command-line arguments, the program should be able to read the input file, perform the required validations, and generate the output file successfully.
+
+# Class walkthrough (modular approach with separated functionality into different classes)
+
+- Set up MySql database, using MySql 8 and this SQL query:
 ```
 CREATE DATABASE lilyData;
 ```
 
-- Set up tables to store information. We will need two tables: product table and genders table, use the following queries:
+- Set up tables to store information. We will need two tables: product table and genders table, enter the following queries:
 ```
 USE lilyData;
 
@@ -28,58 +52,47 @@ CREATE TABLE genders (
 );
 ```
 
-  - We need to get appropriate columns for each table, so lets insert data into tables, use the following queries:
-```
-LOAD DATA INFILE 'path_to_genders.csv'
-INTO TABLE genders
-FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-IGNORE 1 LINES;
-```
-
-```
-LOAD DATA INFILE 'path_to_productTypes.csv'
-INTO TABLE product_types
-FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-IGNORE 1 LINES;
-```
+## Java Program 
 
 
-## Step 2: Write Java Program To do the following:
-- Read input file to read and validate input file
+- Main method: serves as the entry point for the program.
 ```
-Input handling:
-- CSVReader.java: Responsible for reading the input CSV file and returning the data as a list of arrays.
-- CSVWriter.java: Handles writing data to the status CSV file.
-//Read the input file: The code reads the input file using CSVReader.
-```
-- Gender validation by comparing gender info with input file with genders in database, note error if any discrepancies are found
-```
-- GenderValidator.java: Performs gender validation against the database.
-//The code uses the GenderValidator class to validate the gender in the input file against the genders from the table.
-```
-- Product type validation: Compare product types from the input file with the ones stored in the database, if mismatch occurs, note it.
-```
-- ProductTypeValidator.java: Performs product type validation against the database.
-//The code uses the ProductTypeValidator class to validate the product type in the input file against the product types from the table.
-```
-- Image validation: split the image urls from the input file using the delimiter '||' , and check the image urls, verify the response code is 200 for each url, which indicates a valid image, if any of them are invalid make a note of it.
-```
-- ImageValidator.java: Validates the image URLs.
-//The code uses the ImageValidator class to validate all the images in each row. It checks if all the images are valid (HTTP status 200).
-```
-- Create a status file in the form of a new csv file to store the rows and columns from the input file. 
-- Include additional column named "status"
-- Iterate through input file, validation each row and then write the row to the status file with the validation status and any errors
-```
-The code creates a status file (CSV) with all the rows and columns from the input file. It adds an additional "status" column to denote if the information for a specific row is valid or not. If there are any validation errors, the error messages are listed in plain English.
+- Main.java:
+The main method orchestrates the overall flow of the program, including reading the input file, performing validations, and writing the status file. Any unexpected errors are logged. Make sure to adjust the file paths and filenames as necessary to match the actual location of your input file and desired output file.
 ```
 
-## Class walkthrough (modular approach with separated functionality into different classes)
+- Input handling: Read input file to read and validate input file.
+```
+- CSVReader.java: 
+Responsible for reading the input CSV file and returning the data as a list of arrays. The CSVReader class provides a convenient method readInputFile to read the input CSV file and obtain its contents as a list of rows. Any errors during the file reading process are logged.
+- CSVWriter.java: 
+Handles writing data to the status CSV file. The CSVWriter class provides a method writeStatusFile to write the status file based on the provided rows and the specified output file. Any errors during the file writing process are logged.
+```
 
-Main class:
-- Main.java: Contains the main method and serves as the entry point for the program.
+- Validating data: Necessary validation logic for the different data fields specified in the problem.
+```
+ValidationUtils.java:  
 
-Rest are covered above.
+validateGender(List<String[]> rows): This method validates the gender values in the given rows. It retrieves the valid genders from the CSV file (Genders.csv) using the getValidGendersFromCSV() method. Then, it checks each row for invalid gender values and logs them using the LOGGER object.
+
+getValidGendersFromCSV(): This method reads the CSV file (Genders.csv) and retrieves the valid gender values from the "display_name" column. It uses the Apache Commons CSV library to parse the CSV file and stores the valid gender values in a list.
+
+isValidGender(String gender): This method checks if the given gender value is valid. It compares the gender value with "men" and "women" (case-insensitive) and returns true if it matches either of them.
+
+validateProductType(List<String[]> rows): This method validates the product type values in the given rows. It retrieves the valid product types from the CSV file (ProductTypes.csv) using the getValidProductTypesFromCSV() method. Then, it checks each row for invalid product type values and logs them using the LOGGER object.
+
+getValidProductTypesFromCSV(): This method reads the CSV file (ProductTypes.csv) and retrieves the valid product type values from the "display_name" column. It uses the Apache Commons CSV library to parse the CSV file and stores the valid product type values in a list.
+
+validateImages(List<String[]> rows): This method validates the image URLs in the given rows. It uses an ExecutorService and multiple threads to parallelize the image validation process. It iterates over each row, splits the image URLs by the separator ||, and creates an ImageValidationTask for each image URL. The tasks are submitted to the executor service for execution.
+
+determineRowStatus(String[] row): This method determines the status of a row based on various validations. It checks the gender, product type, and image URLs in the row to identify any validation failures. It constructs a status string indicating the validation failures and returns it.
+
+isValidImageUrl(String imageUrl): This method validates the given image URL by sending an HTTP HEAD request to the URL and checking the response status code. It returns true if the status code is HTTP OK (200), indicating a valid image URL.
+
+- ImageValidationTask.java: The ImageValidationTask class represents a task for validating an image URL. It logs messages indicating the progress and result of the image validation.
+
+```
+
 
 
 
