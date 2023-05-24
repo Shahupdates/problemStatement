@@ -1,29 +1,41 @@
 package org.lilyai;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CSVReader {
-    private static final Logger LOGGER = Logger.getLogger(CSVReader.class.getName());
+    public static List<String[]> read(String filename) {
+        List<String[]> inputData = new ArrayList<>();
 
-    public static List<String[]> readInputFile(String inputFile) {
-        List<String[]> rows = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            // Read the header row
+            String headerLine = reader.readLine();
+            String[] columnNames = parseRow(headerLine);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             String line;
-            while ((line = br.readLine()) != null) {
-                String[] row = line.split(",");
-                rows.add(row);
+            while ((line = reader.readLine()) != null) {
+                String[] row = parseRow(line);
+                inputData.add(row);
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error reading input file", e);
+            e.printStackTrace();
         }
 
-        return rows;
+        return inputData;
+    }
 
+    private static String[] parseRow(String line) {
+        // Split the line by comma, ignoring any commas within quotes
+        String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+
+        // Remove quotes from each part
+        for (int i = 0; i < parts.length; i++) {
+            parts[i] = parts[i].replaceAll("^\"|\"$", "");
+        }
+
+        return parts;
     }
 }
