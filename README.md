@@ -57,15 +57,17 @@ CREATE TABLE genders (
 
 - Main method: serves as the entry point for the program.
 ```
-- Main.java:
+Main.java:
 The main method orchestrates the overall flow of the program, including reading the input file, performing validations, and writing the status file. Any unexpected errors are logged. Make sure to adjust the file paths and filenames as necessary to match the actual location of your input file and desired output file.
 ```
 
 - Input handling: Read input file to read and validate input file.
 ```
-- CSVReader.java: 
+CSVReader.java: 
 Responsible for reading the input CSV file and returning the data as a list of arrays. The CSVReader class provides a convenient method readInputFile to read the input CSV file and obtain its contents as a list of rows. Any errors during the file reading process are logged.
-- CSVWriter.java: 
+
+
+CSVWriter.java: 
 Handles writing data to the status CSV file. The CSVWriter class provides a method writeStatusFile to write the status file based on the provided rows and the specified output file. Any errors during the file writing process are logged.
 ```
 
@@ -89,7 +91,10 @@ determineRowStatus(String[] row): This method determines the status of a row bas
 
 isValidImageUrl(String imageUrl): This method validates the given image URL by sending an HTTP HEAD request to the URL and checking the response status code. It returns true if the status code is HTTP OK (200), indicating a valid image URL.
 
-- ImageValidationTask.java: The ImageValidationTask class represents a task for validating an image URL. It logs messages indicating the progress and result of the image validation.
+
+
+ImageValidationTask.java: 
+The ImageValidationTask class represents a task for validating an image URL. It logs messages indicating the progress and result of the image validation.
 
 ```
 
