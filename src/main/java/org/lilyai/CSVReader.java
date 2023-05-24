@@ -1,8 +1,7 @@
 package org.lilyai;
-
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,7 +13,7 @@ public class CSVReader {
     public static List<String[]> readInputFile(String inputFile) {
         List<String[]> rows = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(CSVReader.class.getClassLoader().getResourceAsStream(inputFile)))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
@@ -25,5 +24,6 @@ public class CSVReader {
         }
 
         return rows;
+
     }
 }
